@@ -1,5 +1,6 @@
 package controllers;
 
+import models.HomeModel;
 import views.HomeView;
 
 public class HomeController
@@ -8,12 +9,12 @@ public class HomeController
     private HomeView view;
     private int id;
 
-    public HomeController(HomeModel model, HomeView view, int id)
+    public HomeController(HomeView view, HomeModel model, int id)
     {
         this.model = model;
         this.view = view;
         this.id = id;
 
-        this.view.createView();
+        this.view.createView(id);
     }
 }
