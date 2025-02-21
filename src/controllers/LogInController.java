@@ -15,7 +15,12 @@ public class LogInController
     {
         this.view = view;
         this.model = model;
+        createView();
+    }
 
+    public void createView()
+    {
+        view.createView();
         this.view.addLogInListener(new AuthListener());
     }
 
@@ -33,7 +38,7 @@ public class LogInController
             {
                 view.badLogin();
                 view.destroyView();
-                view.createView();
+                createView();
             }
         }
     }
