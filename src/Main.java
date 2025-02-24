@@ -4,7 +4,7 @@ import models.*;
 import views.*;
 import controllers.*;
 
-public class Main 
+public class Main
 {
 	public static void main(String[] args) 
 	{

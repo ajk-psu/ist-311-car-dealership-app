@@ -2,7 +2,7 @@ package controllers;
 
 import views.HomeView;
 
-public class HomeController
+public class HomeController 
 {
     // Enables success screen (initialized in main)
     public HomeController(HomeView view)
