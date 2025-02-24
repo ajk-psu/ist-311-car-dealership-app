@@ -8,7 +8,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 
 public class AccountModel {
-    private static final String DATABASE_URL = "jdbc:ucanaccess://" + System.getProperty("user.dir") + "/CarDealership.accdb";
+    private static final String DATABASE_URL = "jdbc:ucanaccess://" + System.getProperty("user.dir") + "//db//dealership.accdb";
     private Connection connection = null;
 
     public AccountModel() {
