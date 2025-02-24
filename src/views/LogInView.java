@@ -74,7 +74,7 @@ public class LogInView extends JFrame
 		logInPane.add(passwordField);
 		
 		// btnLogIn Properties
-		JButton btnLogIn = new JButton("Log In");
+		btnLogIn = new JButton("Log In");
 		btnLogIn.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnLogIn.setBounds(105, 188, 125, 30);
 		logInPane.add(btnLogIn);

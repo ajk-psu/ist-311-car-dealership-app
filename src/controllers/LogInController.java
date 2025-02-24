@@ -1,44 +1,42 @@
 package controllers;
 
 import models.AccountModel;
+import views.HomeView;
 import views.LogInView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
 
 public class LogInController
 {
     private LogInView view;
     private AccountModel model;
 
-    public LogInController(LogInView view, AccountModel model) 
+    // Enable view (initialized via call in main) and add pass listener
+    public LogInController(AccountModel model, LogInView view)
     {
         this.view = view;
         this.model = model;
-        createView();
+        view.setVisible(true);
+        this.view.addLogInListener(new LogInListener());
     }
 
-    public void createView()
+    class LogInListener implements ActionListener 
     {
-        view.createView();
-        this.view.addLogInListener(new AuthListener());
-    }
+        // ActionListener enables btnLogIn in view to call actionPerformed when clicked 
+        public void actionPerformed(ActionEvent e) 
+        {
+            // User text gathered through view accessors
+            String username = view.getAccountName();
+            String password = view.getAccountPassword();
 
-    class AuthListener implements ActionListener {
-        
-        public void actionPerformed(ActionEvent e) { 
-            String username = view.getUsername();
-            String password = view.getPassword();
-
+            // Passes to model for auth, then instantiates response
             if (model.authenticate(username, password))
             {
-                HomeController homeController = new HomeController(view, model, model.getID(username, password));
+                new HomeController(new HomeView());
             }
             else
             {
-                view.badLogin();
-                view.destroyView();
-                createView();
+                view.badLogInMessage();
             }
         }
     }
