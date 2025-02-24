@@ -2,18 +2,11 @@ package controllers;
 
 import views.HomeView;
 
-public class HomeController
+public class HomeController 
 {
-    private HomeModel model;
-    private HomeView view;
-    private int id;
-
-    public HomeController(HomeModel model, HomeView view, int id)
+    // Enables success screen (initialized in main)
+    public HomeController(HomeView view)
     {
-        this.model = model;
-        this.view = view;
-        this.id = id;
-
-        this.view.createView();
+        view.setVisible(true);
     }
 }

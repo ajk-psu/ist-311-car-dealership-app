@@ -1,11 +1,37 @@
 package models;
 
-import java.sql.*;
+//import java.sql.*;
 
 
 public class AccountModel 
 {
-	
+
+	public boolean authenticate(String username, String password)
+	{
+
+		if (username.equals("username") && password.equals("password"))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public int getID(String username, String password) 
+	{
+		if (authenticate(username, password))
+		{
+			return 1;
+		}
+		else
+		{
+			return -1;
+		}
+	}
+
+	/* 
 	// This is just a temporary static method to test whether or not the Access driver is set up
 	// and can connect the program to the database.
 	public static void debugTestConnection()
@@ -25,8 +51,10 @@ public class AccountModel
 		{
 			System.out.printf("Connection Failed! Printing stack trace...%n");
 			sqlExcept.printStackTrace();
-				
+			
+			
 		}
 	}
+	*/
 	
 }
