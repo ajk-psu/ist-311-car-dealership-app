@@ -32,7 +32,7 @@ public class LogInController
             if (model.authenticate(username, password))
             {
                 //new HomeController(model, username, password);
-                new HomeController(model, "jDoe", "john1doe2*");            // DEBUG
+                new HomeController(model, username, password);
 
             }
             else
