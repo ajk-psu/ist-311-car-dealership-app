@@ -1,7 +1,6 @@
 package controllers;
 
 import models.AccountModel;
-import views.HomeView;
 import views.LogInView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +31,9 @@ public class LogInController
             // Passes to model for auth, then instantiates response
             if (model.authenticate(username, password))
             {
-                new HomeController(new HomeView());
+                //new HomeController(model, username, password);
+                new HomeController(model, "jDoe", "john1doe2*");            // DEBUG
+
             }
             else
             {

@@ -8,7 +8,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 
 public class AccountModel {
-    private static final String DATABASE_URL = "jdbc:ucanaccess://" + System.getProperty("user.dir") + "//db//dealership.accdb";
+    private static final String DATABASE_URL = "jdbc:ucanaccess://ist-311-car-dealership-app/db/dealership.accdb";      //DEBUG
     private Connection connection = null;
 
     public AccountModel() {
@@ -27,7 +27,7 @@ public class AccountModel {
      * @param password The entered password.
      * @return true if credentials match, false otherwise.
      */
-    public boolean authenticate(String username, String password) {
+    public boolean authenticate(String username, String password) { return true; }         /*          DEBUG
         String query = "SELECT * FROM Account WHERE AccountName = ? AND AccountPassword = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
@@ -40,7 +40,7 @@ public class AccountModel {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
         }
         return false;
-    }
+    } */
 
     /**
      * Retrieve EmployeeID after successful login.
