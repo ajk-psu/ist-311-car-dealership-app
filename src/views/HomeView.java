@@ -20,8 +20,8 @@ public class HomeView extends JFrame
 	private final String[] TICKET_TABLE_COLUMN_NAMES = {"Ticket ID", "Open Date", "Close Date", "Description"};
 	private final String[] VEHICLE_TABLE_COLUMN_NAMES = {"ID", "Make", "Model", "Year", "Color", "Mileage", "Price", "Purchase Date", "Sale Date"};
 	
-	private DefaultTableModel tblVehicleData = new DefaultTableModel(VEHICLE_TABLE_COLUMN_NAMES, 0);
-	private DefaultTableModel ticketData = new DefaultTableModel(TICKET_TABLE_COLUMN_NAMES, 0);
+	private DefaultTableModel dataVehicle = new DefaultTableModel(VEHICLE_TABLE_COLUMN_NAMES, 0);
+	private DefaultTableModel dataTicket = new DefaultTableModel(TICKET_TABLE_COLUMN_NAMES, 0);
 	
 	private JButton btnSelectVehicle;
 	private JButton btnAddVehicle;
@@ -47,12 +47,12 @@ public class HomeView extends JFrame
 		homeFrame.setContentPane(homePane);
 				
 		// tblVehicle Properties
-		tblVehicle = new JTable(tblVehicleData);
+		tblVehicle = new JTable(dataVehicle);
 		tblVehicle.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		tblVehicle.setFillsViewportHeight(true);
 		
 		// tblTicket Properties
-		tblTicket = new JTable(ticketData);
+		tblTicket = new JTable(dataTicket);
 		tblTicket.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		tblTicket.setFillsViewportHeight(true);
 		
@@ -166,7 +166,7 @@ public class HomeView extends JFrame
      */
 	public void addNewVehicleData(Object[] newVehicleData)
 	{
-		this.tblVehicleData.addRow(newVehicleData);
+		this.dataVehicle.addRow(newVehicleData);
 	}
 	
 	/**
@@ -178,11 +178,11 @@ public class HomeView extends JFrame
 	public void updateAllVehicleData(ArrayList<Object[]> arrayOfVehicleData)
 	{
 		// Clears table of all data
-		this.tblVehicleData.setRowCount(0);
+		this.dataVehicle.setRowCount(0);
 		
 		for (Object[] row : arrayOfVehicleData)
 		{
-			this.tblVehicleData.addRow(row);
+			this.dataVehicle.addRow(row);
 		}
 	}
 	
@@ -195,7 +195,7 @@ public class HomeView extends JFrame
 	{
 		for (int column = 0; column < updatedRowData.length; column++)
 		{
-			this.tblVehicleData.setValueAt(updatedRowData[column], rowIndex, column);
+			this.dataVehicle.setValueAt(updatedRowData[column], rowIndex, column);
 		}
 	}
 	
@@ -206,9 +206,9 @@ public class HomeView extends JFrame
 	public void removeSingleVehicleDataRow(int rowIndex)
 	{
 		// Make sure rowIndex is actually valid.
-		if (rowIndex >= 0 && rowIndex < this.tblVehicleData.getRowCount())
+		if (rowIndex >= 0 && rowIndex < this.dataVehicle.getRowCount())
 		{
-			this.tblVehicleData.removeRow(rowIndex);
+			this.dataVehicle.removeRow(rowIndex);
 		}
 		else
 		{
