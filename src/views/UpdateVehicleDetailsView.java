@@ -10,13 +10,12 @@ import java.awt.event.ActionListener;
 import java.awt.Component;
 import java.awt.BorderLayout;
 
-public class VehicleDetailsView extends JFrame 
+public class UpdateVehicleDetailsView extends JFrame 
 {
-	private JFrame vehicleDetailsViewFrame;
+	private JFrame updateDetailsViewFrame;
 	private JPanel mainPane;
 	
-	private JButton btnEditVehicle;
-	private JButton btnRemoveVehicle;
+	private JButton btnUpdateVehicleDetails;
 	
 	private JTextField txtVIN;
 	private JTextField txtMake;
@@ -31,35 +30,29 @@ public class VehicleDetailsView extends JFrame
 	// GUI Constructor
 	// ----------------------------------------
 	/**
-	 * Constructs the VehicleDetailsView window when called. This window needs to have a Vehicle passed to it to parse information from.
+	 * Constructs the UpdateVehicleDetailsView window when called. This window needs to have a Vehicle passed to it to parse information from.
 	 * @param selectedVehicle - Vehicle - The Vehicle object to inspect the details of.
 	 */
-	public VehicleDetailsView(Vehicle selectedVehicle) 
+	public UpdateVehicleDetailsView(Vehicle selectedVehicle) 
 	{	
 		// General Window Properties
-		vehicleDetailsViewFrame = new JFrame("Vehicle Details");
-		vehicleDetailsViewFrame.setResizable(false);
-		vehicleDetailsViewFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		vehicleDetailsViewFrame.setBounds(100, 100, 380, 410);
+		updateDetailsViewFrame = new JFrame("Vehicle Details");
+		updateDetailsViewFrame.setResizable(false);
+		updateDetailsViewFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		updateDetailsViewFrame.setBounds(100, 100, 380, 410);
 		
 		// homePane Properties
 		mainPane = new JPanel();
 		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		mainPane.setLayout(null);
-		vehicleDetailsViewFrame.setContentPane(mainPane);
+		updateDetailsViewFrame.setContentPane(mainPane);
 		
 		
 		// btnEditVehicle Properties
-		btnEditVehicle = new JButton("Edit Vehicle");
-		btnEditVehicle.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnEditVehicle.setBounds(10, 323, 129, 41);
-		mainPane.add(btnEditVehicle);
-		
-		// btnRemoveVehicle Properties
-		btnRemoveVehicle = new JButton("Remove Vehicle");
-		btnRemoveVehicle.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnRemoveVehicle.setBounds(225, 323, 129, 41);
-		mainPane.add(btnRemoveVehicle);
+		btnUpdateVehicleDetails = new JButton("Update Vehicle Details");
+		btnUpdateVehicleDetails.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnUpdateVehicleDetails.setBounds(89, 323, 169, 41);
+		mainPane.add(btnUpdateVehicleDetails);
 		
 		
 		// txtVINProperties
@@ -72,7 +65,6 @@ public class VehicleDetailsView extends JFrame
 		
 		// txtMake Properties
 		txtMake = new JTextField(selectedVehicle.getMake());
-		txtMake.setEditable(false);
 		txtMake.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtMake.setBounds(124, 77, 230, 30);
 		mainPane.add(txtMake);
@@ -80,7 +72,6 @@ public class VehicleDetailsView extends JFrame
 		
 		// txtModel Properties
 		txtModel = new JTextField(selectedVehicle.getModel());
-		txtModel.setEditable(false);
 		txtModel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtModel.setColumns(10);
 		txtModel.setBounds(124, 118, 230, 30);
@@ -88,7 +79,6 @@ public class VehicleDetailsView extends JFrame
 		
 		// txtYear Properties
 		txtYear = new JTextField(Integer.toString(selectedVehicle.getYear()));
-		txtYear.setEditable(false);
 		txtYear.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtYear.setColumns(10);
 		txtYear.setBounds(124, 159, 230, 30);
@@ -96,7 +86,6 @@ public class VehicleDetailsView extends JFrame
 		
 		// txtColor Properties
 		txtColor = new JTextField(selectedVehicle.getColor());
-		txtColor.setEditable(false);
 		txtColor.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtColor.setColumns(10);
 		txtColor.setBounds(124, 200, 230, 30);
@@ -104,7 +93,6 @@ public class VehicleDetailsView extends JFrame
 		
 		// txtMileage Properties
 		txtMileage = new JTextField(Double.toString(selectedVehicle.getMileage()));
-		txtMileage.setEditable(false);
 		txtMileage.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtMileage.setColumns(10);
 		txtMileage.setBounds(124, 241, 230, 30);
@@ -112,7 +100,6 @@ public class VehicleDetailsView extends JFrame
 		
 		// txtPrice Properties
 		txtPrice = new JTextField(Double.toString(selectedVehicle.getPrice()));
-		txtPrice.setEditable(false);
 		txtPrice.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtPrice.setColumns(10);
 		txtPrice.setBounds(124, 282, 230, 30);
@@ -120,7 +107,7 @@ public class VehicleDetailsView extends JFrame
 		
 		
 		// lblTitle Properties
-		JLabel lblTitle = new JLabel("Showing detailed vehicle information:");
+		JLabel lblTitle = new JLabel("You are now editing the information for this vehicle.");
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblTitle.setBounds(10, 11, 344, 14);
@@ -189,7 +176,7 @@ public class VehicleDetailsView extends JFrame
 	 */
 	public void setVisible(boolean visible)
 	{
-		this.vehicleDetailsViewFrame.setVisible(visible);
+		this.updateDetailsViewFrame.setVisible(visible);
 	}
 	
 	/**
@@ -198,7 +185,7 @@ public class VehicleDetailsView extends JFrame
 	 */
 	public void dispose()
 	{
-		this.vehicleDetailsViewFrame.dispose();
+		this.updateDetailsViewFrame.dispose();
 	}
 	
 	/**
@@ -207,7 +194,54 @@ public class VehicleDetailsView extends JFrame
      */
 	public void createListeners(ActionListener listener)
 	{
-		this.btnEditVehicle.addActionListener(listener);
-		this.btnRemoveVehicle.addActionListener(listener);
+		this.btnUpdateVehicleDetails.addActionListener(listener);
 	}
+	
+	// ----------------------------------------
+	// Vehicle Data Related Methods
+	// ----------------------------------------
+		
+	/**
+	 * When called, this method will collect the user's input from each text field and return them as one Object[] array to be used
+	 * elsewhere for updating a Vehicle's attributes. This method will validate the user's input to ensure fields are not empty
+	 * and are of the right type. If the method cannot validate, it will instead return null.
+	 * @return If validation is successful, an Object[] array containing the attributes to update a Vehicle's attributes from. 
+	 * If unsuccessful, this method will return null instead.
+	 * @implNote This method can possibly return null if input validation fails. The caller should be ready to handle null being returned.
+	 */
+		public Object[] getUpdatedVehicleAttributes()
+		{
+			// First grab all Strings from the text fields.
+			String strVIN = this.txtVIN.getText().trim();
+			String strMake = this.txtMake.getText().trim();
+			String strModel = this.txtModel.getText().trim();
+			String strYear = this.txtYear.getText().trim();
+			String strColor = this.txtColor.getText().trim();
+			String strMileage = this.txtMileage.getText().trim();
+			String strPrice = this.txtPrice.getText().trim();
+			
+			// Check to see if any fields are empty. We are not allowing empty/null values.
+			if (strVIN.isEmpty() || strMake.isEmpty() || strModel.isEmpty() || strYear.isEmpty() || strColor.isEmpty() || strMileage.isEmpty() || strPrice.isEmpty())
+			{
+				JOptionPane.showMessageDialog(this,"All fields are required. Please fill out every field.","Input Error",JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+			else
+			{
+				// Attempts to cast strYear, dblMileage, and dblPrice the appropriate types.
+				try
+				{
+					int intYear = Integer.parseInt(strYear);
+					double dblMileage = Double.parseDouble(strMileage);
+					double dblPrice = Double.parseDouble(strPrice);
+					
+					return new Object[] {strVIN, strMake, strModel, intYear, strColor, dblMileage, dblPrice};
+				}
+				catch (NumberFormatException numEx)
+				{
+					JOptionPane.showMessageDialog(this, "Year must be an integer. Mileage and price must be valid numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
+					return null;
+				}
+			}
+		}
 }

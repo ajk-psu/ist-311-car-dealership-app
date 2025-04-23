@@ -4,21 +4,21 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import models.Vehicle;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.awt.Component;
 import java.util.ArrayList;
 
 public class HomeView extends JFrame 
 {
-	
 	private JFrame homeFrame;
 	private JPanel homePane;
 	
 	private JTable tblVehicle;
 	private JTable tblTicket;
+	private final String[] VEHICLE_TABLE_COLUMN_NAMES = {"VIN", "Make", "Model", "Year", "Color", "Mileage", "Price"};
 	private final String[] TICKET_TABLE_COLUMN_NAMES = {"Ticket ID", "Open Date", "Close Date", "Description"};
-	private final String[] VEHICLE_TABLE_COLUMN_NAMES = {"ID", "Make", "Model", "Year", "Color", "Mileage", "Price", "Purchase Date", "Sale Date"};
 	
 	private DefaultTableModel dataVehicle = new DefaultTableModel(VEHICLE_TABLE_COLUMN_NAMES, 0);
 	private DefaultTableModel dataTicket = new DefaultTableModel(TICKET_TABLE_COLUMN_NAMES, 0);
@@ -30,8 +30,9 @@ public class HomeView extends JFrame
 	
 	private JLabel lblWelcomeMessage;
 
+	// ----------------------------------------
 	// GUI Constructor
-	// Note: The constructor does not automatically setVisible() to true.
+	// ----------------------------------------
 	public HomeView() 
 	{
 		// General Window Properties
@@ -67,7 +68,7 @@ public class HomeView extends JFrame
 		scrlPaneTicket.setBounds(10, 436, 714, 250);
 		homePane.add(scrlPaneTicket);
 		
-		
+	
 		// lblWelcomeMessage Properties
 		lblWelcomeMessage = new JLabel("Welcome, [Name Here]!");
 		lblWelcomeMessage.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -80,6 +81,12 @@ public class HomeView extends JFrame
 		lblVehicleInventory.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVehicleInventory.setBounds(10, 47, 714, 25);
 		homePane.add(lblVehicleInventory);
+		
+		JLabel lblTickets = new JLabel("Repair Tickets");
+		lblTickets.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTickets.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblTickets.setBounds(10, 400, 714, 25);
+		homePane.add(lblTickets);
 		
 		
 		// btnSelectVehicle Properties
@@ -94,7 +101,19 @@ public class HomeView extends JFrame
 		btnAddVehicle.setBounds(589, 336, 135, 35);
 		homePane.add(btnAddVehicle);
 		
+		// btnSelectTicket Properties
+		btnSelectTicket = new JButton("Select Ticket");
+		btnSelectTicket.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnSelectTicket.setBounds(10, 697, 135, 35);
+		homePane.add(btnSelectTicket);
+
+		// btnAddTicket Properties
+		btnAddTicket = new JButton("Open New Ticket");
+		btnAddTicket.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnAddTicket.setBounds(589, 697, 135, 35);
+		homePane.add(btnAddTicket);
 		
+
 		// seperatorHeader Properties
 		JSeparator seperatorHeader = new JSeparator();
 		seperatorHeader.setBounds(10, 36, 714, 2);
@@ -104,30 +123,16 @@ public class HomeView extends JFrame
 		JSeparator separatorVehicleInventory = new JSeparator();
 		separatorVehicleInventory.setBounds(10, 387, 714, 2);
 		homePane.add(separatorVehicleInventory);
-		
-		JLabel lblTickets = new JLabel("Repair Tickets");
-		lblTickets.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTickets.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblTickets.setBounds(10, 400, 714, 25);
-		homePane.add(lblTickets);
-		
-		// btnSelectTicket Properties
-		btnSelectTicket = new JButton("Select Ticket");
-		btnSelectTicket.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnSelectTicket.setBounds(10, 697, 135, 35);
-		homePane.add(btnSelectTicket);
-		
-		// btnAddTicket Properties
-		btnAddTicket = new JButton("Open New Ticket");
-		btnAddTicket.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnAddTicket.setBounds(589, 697, 135, 35);
-		homePane.add(btnAddTicket);
 	}
+	
 	
 	// ----------------------------------------
 	// PUBLIC FACING METHODS FOR THE CONTROLLER
 	// ----------------------------------------
 	
+	// ----------------------------------------
+	// GUI Methods
+	// ----------------------------------------
 	/**
      * Sets the visibility of the HomeView.
      * @param visible - boolean -  If true, HomeView becomes visible. If false, HomeView is hidden.
@@ -160,97 +165,167 @@ public class HomeView extends JFrame
 	}
 	
 	
+	// ----------------------------------------
+	// Vehicle Data Related Methods
+	// ----------------------------------------
 	/**
-     * Appends a new row of data to the end of dataVehicle.
-     * @param rowIndex - int - The index of the row to pull data from.
+     * Updates dataVehicle with a supplied ArrayList of Vehicle objects. 
+     * @param arrayOfVehicles - ArrayList<Vehicle> - The ArrayList of Vehicle objects to be added to dataVehicle.
+     * @implNote This method will override all data in the table when called!
      */
-	public void addNewVehicleData(Object[] newVehicleData)
+	public void updateEntireVehicleTable(ArrayList<Vehicle> arrayOfVehicles)
 	{
-		this.dataVehicle.addRow(newVehicleData);
-	}
-	
-	/**
-     * Updates tblVehicleData with a supplied ArrayList of Objects[]. 
-     * @param arrayOfVehicleData - ArrayList<Object[]> - The ArrayList of Objects[] to be added to tblVehicleData.
-     * @implNote This method will override all data in the table when called! Use updateSingleVehicleDataRow if you need to 
-     * update a single row.
-     */
-	public void updateAllVehicleData(ArrayList<Object[]> arrayOfVehicleData)
-	{
-		// Clears table of all data
+		// Clears the vehicle table model of all existing data.
 		this.dataVehicle.setRowCount(0);
 		
-		for (Object[] row : arrayOfVehicleData)
+		// For each vehicle in the ArrayList<Vehicle>, create an Object[] from the data
+		// and then add it to the vehicle table model.
+		for (Vehicle currentVehicle : arrayOfVehicles)
 		{
-			this.dataVehicle.addRow(row);
+			Object[] vehicleRow = 
+				{
+						currentVehicle.getVIN(),
+						currentVehicle.getMake(),
+						currentVehicle.getModel(),
+						currentVehicle.getYear(),
+						currentVehicle.getColor(),
+						currentVehicle.getMileage(),
+						currentVehicle.getPrice()
+				};
+			this.dataVehicle.addRow(vehicleRow);
 		}
 	}
 	
 	/**
-     * Updates a single row of tblVehicleData with a supplied Object[] and index to be changed.
-     * @param rowIndex - int - The index of the row to be changed
-     * @param updatedRowData - Object[] -  The set of data to change the row to.
+     * Adds a single new Vehicle object to the vehicle data table model.
+     * @param newVehicle - Vehicle - The new Vehicle object to be added to the table.
+     * @implNote This method only affects the view's table data.
      */
-	public void updateSingleVehicleDataRow(int rowIndex, Object[] updatedRowData)
+	public void addVehicleToTable(Vehicle newVehicle)
 	{
-		for (int column = 0; column < updatedRowData.length; column++)
+		Object[] newRow =
+			{
+				newVehicle.getVIN(),
+				newVehicle.getMake(),
+				newVehicle.getModel(),
+				newVehicle.getYear(),
+				newVehicle.getColor(),
+				newVehicle.getMileage(),
+				newVehicle.getPrice()
+			};
+		this.dataVehicle.addRow(newRow);
+	}
+	
+	/**
+     * Updates the attributes of the specified Vehicle in the data table.
+     * @param updatedVehicle - Vehicle - The Vehicle object to be updated.
+     * @implNote This method only affects the view's table data.
+     */
+	public void updateVehicleInTable(Vehicle updatedVehicle)
+	{
+		// Get the VIN from the updated Vehicle object.
+		// (This is the primary key of Vehicles and should always be unique, no need to validate uniqueness).
+		String targetVIN = updatedVehicle.getVIN();
+		
+		// Search through the table for the VIN number.
+		for (int row = 0; row < dataVehicle.getRowCount(); row++)
 		{
-			this.dataVehicle.setValueAt(updatedRowData[column], rowIndex, column);
+			String currentVIN = (String) dataVehicle.getValueAt(row, 0); // Column 0 should always be the VIN number.
+			
+			// Vehicle found.
+			if (currentVIN.equals(targetVIN))
+			{
+				this.dataVehicle.setValueAt(updatedVehicle.getMake(), row, 1);
+				this.dataVehicle.setValueAt(updatedVehicle.getModel(), row, 2);
+				this.dataVehicle.setValueAt(updatedVehicle.getYear(), row, 3);
+				this.dataVehicle.setValueAt(updatedVehicle.getColor(), row, 4);
+				this.dataVehicle.setValueAt(updatedVehicle.getMileage(), row, 5);
+				this.dataVehicle.setValueAt(updatedVehicle.getPrice(), row, 6);
+				break;
+			}
 		}
 	}
 	
 	/**
-     * Removes a single row of tblVehicleData at the specified index. Will prompt the user to confirm they want to remove the row.
-     * @param rowIndex - int - The index of the row to be removed
+     * Removes the specified Vehicle object from the view's table.
+     * @param updatedVehicle - Vehicle - The Vehicle object to be updated.
+     * @implNote This method only affects the view's table data.
      */
-	public void removeSingleVehicleDataRow(int rowIndex)
+	public void removeVehicleFromTable(Vehicle vehicleToRemove)
 	{
-		// Make sure rowIndex is actually valid.
-		if (rowIndex >= 0 && rowIndex < this.dataVehicle.getRowCount())
-		{
-			this.dataVehicle.removeRow(rowIndex);
-		}
-		else
-		{
-			JOptionPane.showMessageDialog(this, "Could not find specificed row.", "Error", JOptionPane.WARNING_MESSAGE);
-		}
-	}
-
-	/**
-     * Exports the selected row of data (using int rowIndex) to an Object[] for use elsewhere in the program.
-     * @param rowIndex - int - The index of the row to pull data from.
-     * @return Returns a single Object[], representing a single row of data from tblVehicleData.
-     */
-	public Object[] getSelectedVehicleData(int rowIndex)
-	{
-		Object[] selectedVehicleData = new Object[this.tblVehicle.getColumnCount()];
+		String targetVIN = vehicleToRemove.getVIN();
 		
-		for (int column = 0; column < this.tblVehicle.getColumnCount(); column++)
+		// Search through the table for the VIN number.
+		for (int row = 0; row < dataVehicle.getRowCount(); row++)
 		{
-			selectedVehicleData[column] = this.tblVehicle.getValueAt(rowIndex, column);
+			String currentVIN = (String) dataVehicle.getValueAt(row, 0); // Column 0 should always be the VIN number.
+			
+			// Vehicle found.
+			if (currentVIN.equals(targetVIN))
+			{
+				this.dataVehicle.removeRow(row);
+				break;
+			}
 		}
-		
-		return selectedVehicleData;
 	}
 	
 	/**
-     * Returns the row index of the selected row from JTable tblVehicle as an int.
-     * @return Returns the row index.
-     * @implNote This method will return -1 if the user did not select a row! While the user will receive a warning,
-     * the method will still return a value regardless. Be prepared to handle -1 in case the user did not select a value!  
+     * Returns the selected Vehicle from the table.
+     * @return The selected Vehicle object from the table, or null if nothing was selected.
+     * @implNote This method will return null if the user does not have an item selected. While the user will be alerted
+     * that nothing was selected, the method will still return null. Make sure you are prepared to handle this null value 
+     * in the controller.
      */
-	public int getSelectedVehicleRowIndex()
+	public Vehicle getSelectedVehicleFromTable() 
 	{
-		int selectedRowIndex = this.tblVehicle.getSelectedRow();
+		int selectedRow = this.tblVehicle.getSelectedRow();
 		
-		if (selectedRowIndex != -1)
-		{
-			return selectedRowIndex;
-		}
-		else
+		// No row is selected!
+		if (selectedRow == -1)
 		{
 			JOptionPane.showMessageDialog(this, "Please select a row first.", "No Row Selected!", JOptionPane.WARNING_MESSAGE);
-			return selectedRowIndex;
+			return null;
 		}
+		else
+		{
+			String strVIN = (String) this.dataVehicle.getValueAt(selectedRow, 0);
+			String strMake = (String) this.dataVehicle.getValueAt(selectedRow, 1);
+			String strModel = (String) this.dataVehicle.getValueAt(selectedRow, 2);
+			int intYear = (int) this.dataVehicle.getValueAt(selectedRow, 3);
+			String strColor = (String) this.dataVehicle.getValueAt(selectedRow, 4);
+			double dblMileage = (double) this.dataVehicle.getValueAt(selectedRow, 5);
+			double dblPrice = (double) this.dataVehicle.getValueAt(selectedRow, 6);
+			
+			return new Vehicle(strVIN, strMake, strModel, intYear, strColor, dblMileage, dblPrice);
+		}
+	}
+	
+	/**
+     * Exports the entire contents of the view's vehicle data table into an ArrayList of Vehicle objects.
+     * @return An ArrayList of Vehicle objects.
+     */
+	public ArrayList<Vehicle> exportVehicleDataFromTable()
+	{
+		ArrayList<Vehicle> vehicleList = new ArrayList<>();
+		
+		// Figure out how many rows (vehicles) there are in the table.
+		int rowCount = this.dataVehicle.getRowCount();
+		
+		// For each row, grab the vehicle attributes and then construct a new Vehicle object from them.
+		// Then add the object to the ArrayList.
+		for (int row = 0; row < rowCount; row++)
+		{
+			String strVIN = (String) this.dataVehicle.getValueAt(row, 0);
+			String strMake = (String) this.dataVehicle.getValueAt(row, 1);
+			String strModel = (String) this.dataVehicle.getValueAt(row, 2);
+			int intYear = (int) this.dataVehicle.getValueAt(row, 3);
+			String strColor = (String) this.dataVehicle.getValueAt(row, 4);
+			double dblMileage = (double) this.dataVehicle.getValueAt(row, 5);
+			double dblPrice = (double) this.dataVehicle.getValueAt(row, 6);
+			
+			Vehicle vehicle = new Vehicle(strVIN, strMake, strModel, intYear, strColor, dblMileage, dblPrice);
+			vehicleList.add(vehicle);
+		}
+		return vehicleList;
 	}
 }
