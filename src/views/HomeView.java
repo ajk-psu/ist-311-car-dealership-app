@@ -20,8 +20,24 @@ public class HomeView extends JFrame
 	private final String[] VEHICLE_TABLE_COLUMN_NAMES = {"VIN", "Make", "Model", "Year", "Color", "Mileage", "Price"};
 	private final String[] TICKET_TABLE_COLUMN_NAMES = {"Ticket ID", "Open Date", "Close Date", "Description"};
 	
-	private DefaultTableModel dataVehicle = new DefaultTableModel(VEHICLE_TABLE_COLUMN_NAMES, 0);
-	private DefaultTableModel dataTicket = new DefaultTableModel(TICKET_TABLE_COLUMN_NAMES, 0);
+	private DefaultTableModel dataVehicle = new DefaultTableModel(VEHICLE_TABLE_COLUMN_NAMES, 0)
+	{
+		// Disables default editable cell behavior in each table
+		@Override
+		public boolean isCellEditable(int row, int column)
+		{
+			return false; 
+		}
+	};
+	
+	private DefaultTableModel dataTicket = new DefaultTableModel(TICKET_TABLE_COLUMN_NAMES, 0)
+	{
+		@Override
+		public boolean isCellEditable(int row, int column)
+		{
+			return false;
+		}
+	};
 	
 	private JButton btnSelectVehicle;
 	private JButton btnAddVehicle;
