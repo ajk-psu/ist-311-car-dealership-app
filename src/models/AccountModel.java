@@ -66,6 +66,27 @@ public class AccountModel {
     }
 
     /**
+     * Retrieve employee first and last name after successful login.
+     * @param id The employee id gained from authentication.
+     * @return "FirstName LastName" if found, null if not found.
+     */
+    public String getEmployeeName(int id) {
+        String query = "SELECT FirstName, LastName FROM Employee WHERE EmployeeID = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("FirstName") + " " + rs.getString("LastName");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return null; // Return null if no employee name is found
+    }
+
+    /**
      * Close the database connection.
      */
     public void closeConnection() {
