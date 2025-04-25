@@ -24,6 +24,9 @@ public class LogInController
         // ActionListener enables btnLogIn in view to call actionPerformed when clicked 
         public void actionPerformed(ActionEvent e) 
         {
+            view.setVisible(false);
+            new HomeController(model, "jDoe", "john1doe2*"); /* For Debug
+            
             // User text gathered through view accessors
             String username = view.getAccountName();
             String password = view.getAccountPassword();
@@ -31,14 +34,14 @@ public class LogInController
             // Passes to model for auth, then instantiates response
             if (model.authenticate(username, password))
             {
-                //new HomeController(model, username, password);
+                view.setVisible(false);
                 new HomeController(model, username, password);
 
             }
             else
             {
                 view.badLogInMessage();
-            }
+            } */
         }
     }
 }
