@@ -37,6 +37,7 @@ public class UpdateVehicleDetailsView extends JFrame
 	{	
 		// General Window Properties
 		updateDetailsViewFrame = new JFrame("Vehicle Details");
+		updateDetailsViewFrame.setTitle("Updating Vehicle Details");
 		updateDetailsViewFrame.setResizable(false);
 		updateDetailsViewFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		updateDetailsViewFrame.setBounds(100, 100, 380, 410);

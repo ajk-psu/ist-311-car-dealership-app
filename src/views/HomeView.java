@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import models.Ticket;
 import models.Vehicle;
 
 import java.awt.Font;
@@ -18,14 +19,14 @@ public class HomeView extends JFrame
 	private JTable tblVehicle;
 	private JTable tblTicket;
 	private final String[] VEHICLE_TABLE_COLUMN_NAMES = {"VIN", "Make", "Model", "Year", "Color", "Mileage", "Price"};
-	private final String[] TICKET_TABLE_COLUMN_NAMES = {"Ticket ID", "Open Date", "Close Date", "Description"};
+	private final String[] TICKET_TABLE_COLUMN_NAMES = {"Ticket ID", "VIN", "Year", "Make", "Model", "Description of Problem"};
 	
 	private DefaultTableModel dataVehicle = new DefaultTableModel(VEHICLE_TABLE_COLUMN_NAMES, 0);
 	private DefaultTableModel dataTicket = new DefaultTableModel(TICKET_TABLE_COLUMN_NAMES, 0);
 	
 	private JButton btnSelectVehicle;
 	private JButton btnAddVehicle;
-	private JButton btnAddTicket;
+	private JButton btnReportVehicleIssue;
 	private JButton btnSelectTicket;
 	
 	private JLabel lblWelcomeMessage;
@@ -92,28 +93,28 @@ public class HomeView extends JFrame
 		// btnSelectVehicle Properties
 		btnSelectVehicle = new JButton("Select Vehicle");
 		btnSelectVehicle.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnSelectVehicle.setBounds(10, 336, 135, 35);
+		btnSelectVehicle.setBounds(291, 336, 135, 35);
 		homePane.add(btnSelectVehicle);
 		
 		// btnAddVehicle Properties
 		btnAddVehicle = new JButton("Add Vehicle");
 		btnAddVehicle.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnAddVehicle.setBounds(589, 336, 135, 35);
+		btnAddVehicle.setBounds(20, 336, 135, 35);
 		homePane.add(btnAddVehicle);
+		
+		// btnReportVehicleIssue Properties
+		btnReportVehicleIssue = new JButton("Report Vehicle Issue");
+		btnReportVehicleIssue.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnReportVehicleIssue.setBounds(579, 336, 145, 35);
+		homePane.add(btnReportVehicleIssue);
 		
 		// btnSelectTicket Properties
 		btnSelectTicket = new JButton("Select Ticket");
 		btnSelectTicket.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnSelectTicket.setBounds(10, 697, 135, 35);
+		btnSelectTicket.setBounds(291, 700, 135, 35);
 		homePane.add(btnSelectTicket);
-
-		// btnAddTicket Properties
-		btnAddTicket = new JButton("Open New Ticket");
-		btnAddTicket.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnAddTicket.setBounds(589, 697, 135, 35);
-		homePane.add(btnAddTicket);
 		
-
+		
 		// seperatorHeader Properties
 		JSeparator seperatorHeader = new JSeparator();
 		seperatorHeader.setBounds(10, 36, 714, 2);
@@ -151,8 +152,8 @@ public class HomeView extends JFrame
 	{
 		this.btnSelectVehicle.addActionListener(listener);
 		this.btnAddVehicle.addActionListener(listener);
+		this.btnReportVehicleIssue.addActionListener(listener);
 		this.btnSelectTicket.addActionListener(listener);
-		this.btnAddTicket.addActionListener(listener);
 	}
 	
 	/**
@@ -184,13 +185,13 @@ public class HomeView extends JFrame
 		{
 			Object[] vehicleRow = 
 				{
-						currentVehicle.getVIN(),
-						currentVehicle.getMake(),
-						currentVehicle.getModel(),
-						currentVehicle.getYear(),
-						currentVehicle.getColor(),
-						currentVehicle.getMileage(),
-						currentVehicle.getPrice()
+					currentVehicle.getVIN(),
+					currentVehicle.getMake(),
+					currentVehicle.getModel(),
+					currentVehicle.getYear(),
+					currentVehicle.getColor(),
+					currentVehicle.getMileage(),
+					currentVehicle.getPrice()
 				};
 			this.dataVehicle.addRow(vehicleRow);
 		}
@@ -230,7 +231,7 @@ public class HomeView extends JFrame
 		// Search through the table for the VIN number.
 		for (int row = 0; row < dataVehicle.getRowCount(); row++)
 		{
-			String currentVIN = (String) dataVehicle.getValueAt(row, 0); // Column 0 should always be the VIN number.
+			String currentVIN = (String) dataVehicle.getValueAt(row, 0); // Column 0 should always be the VIN.
 			
 			// Vehicle found.
 			if (currentVIN.equals(targetVIN))
@@ -248,7 +249,7 @@ public class HomeView extends JFrame
 	
 	/**
      * Removes the specified Vehicle object from the view's table.
-     * @param updatedVehicle - Vehicle - The Vehicle object to be updated.
+     * @param vehicleToRemove - Vehicle - The Vehicle object to be remove.
      * @implNote This method only affects the view's table data.
      */
 	public void removeVehicleFromTable(Vehicle vehicleToRemove)
@@ -327,5 +328,169 @@ public class HomeView extends JFrame
 			vehicleList.add(vehicle);
 		}
 		return vehicleList;
+	}
+	
+	
+	// ----------------------------------------
+	// Ticket Data Related Methods
+	// ----------------------------------------
+	
+	/**
+     * Updates dataVehicle with a supplied ArrayList of Ticket objects. 
+     * @param arrayOfTickets - ArrayList<Ticket> - The ArrayList of Ticket objects to be added to dataVehicle.
+     * @implNote This method will override all data in the table when called!
+     */
+	public void updateEntireTicketTable(ArrayList<Ticket> arrayOfTickets)
+	{
+		// Clears the ticket table model of all existing data.
+		this.dataTicket.setRowCount(0);
+		
+		// For each ticket in the ArrayList<Ticket>, create an Object[] from the data
+		// and then add it to the ticket table model.
+		for (Ticket currentTicket : arrayOfTickets)
+		{
+			Object[] ticketRow = 
+				{
+					currentTicket.getTicketID(),
+					currentTicket.getVIN(),
+					currentTicket.getYear(),
+					currentTicket.getMake(),
+					currentTicket.getModel(),
+					currentTicket.getDescription()
+				};
+			this.dataTicket.addRow(ticketRow);
+		}
+	}
+	
+	/**
+     * Adds a single new Ticket object to the ticket data table model.
+     * @param newTicket - Ticket - The new Ticket object to be added to the table.
+     * @implNote This method only affects the view's table data.
+     */
+	public void addTicketToTable(Ticket newTicket)
+	{
+		Object[] newRow =
+			{
+				newTicket.getTicketID(),
+				newTicket.getVIN(),
+				newTicket.getYear(),
+				newTicket.getMake(),
+				newTicket.getModel(),
+				newTicket.getDescription()
+			};
+		this.dataTicket.addRow(newRow);
+	}
+	
+	/**
+     * Updates the attributes of the specified Ticket in the data table.
+     * @param updatedVehicle - Ticket - The Ticket object to be updated.
+     * @implNote This method only affects the view's table data.
+     */
+	public void updateTicketInTable(Ticket updatedTicket)
+	{
+		// Get the TicketID from the updated Ticket object.
+		// (This is the primary key of Tickets and should always be unique, no need to validate uniqueness).
+		int targetTicketID = updatedTicket.getTicketID();
+		
+		// Search through the table for the VIN number.
+		for (int row = 0; row < dataTicket.getRowCount(); row++)
+		{
+			int currentTicketID = (int) dataTicket.getValueAt(row, 0); // Column 0 should always be the ticket ID.
+			
+			// Vehicle found.
+			if (currentTicketID == targetTicketID)
+			{
+				this.dataTicket.setValueAt(updatedTicket.getTicketID(), row, 0);
+				this.dataTicket.setValueAt(updatedTicket.getVIN(), row, 1);
+				this.dataTicket.setValueAt(updatedTicket.getYear(), row, 2);
+				this.dataTicket.setValueAt(updatedTicket.getMake(), row, 3);
+				this.dataTicket.setValueAt(updatedTicket.getModel(), row, 4);
+				this.dataTicket.setValueAt(updatedTicket.getDescription(), row, 5);
+				break;
+			}
+		}
+	}
+	
+	/**
+     * Removes the specified Ticket object from the view's table.
+     * @param ticketToRemove - Ticket - The Ticket object to be removed.
+     * @implNote This method only affects the view's table data.
+     */
+	public void removeTicketFromTable(Ticket ticketToRemove)
+	{
+		// Get the TicketID from the updated Ticket object.
+		// (This is the primary key of Tickets and should always be unique, no need to validate uniqueness).
+		int targetTicketID = ticketToRemove.getTicketID();
+				
+		// Search through the table for the VIN number.
+		for (int row = 0; row < dataTicket.getRowCount(); row++)
+		{
+			int currentTicketID = (int) dataTicket.getValueAt(row, 0); // Column 0 should always be the ticket ID..
+					
+			// Vehicle found.
+			if (currentTicketID == targetTicketID)
+			{
+				this.dataTicket.removeRow(row);
+				break;
+			}
+		}
+	}
+	
+	/**
+     * Returns the selected Ticket from the table.
+     * @return The selected Ticket object from the table, or null if nothing was selected.
+     * @implNote This method will return null if the user does not have an item selected. While the user will be alerted
+     * that nothing was selected, the method will still return null. Make sure you are prepared to handle this null value 
+     * in the controller.
+     */
+	public Ticket getSelectedTicketFromTable() 
+	{
+		int selectedRow = this.tblTicket.getSelectedRow();
+		
+		// No row is selected!
+		if (selectedRow == -1)
+		{
+			JOptionPane.showMessageDialog(this, "Please select a row first.", "No Row Selected!", JOptionPane.WARNING_MESSAGE);
+			return null;
+		}
+		else
+		{
+			int intTicketID = (int) this.dataTicket.getValueAt(selectedRow, 0);
+			String strVIN = (String) this.dataTicket.getValueAt(selectedRow, 1);
+			int intYear = (int) this.dataTicket.getValueAt(selectedRow, 2);
+			String strMake = (String) this.dataTicket.getValueAt(selectedRow, 3);
+			String strModel = (String) this.dataTicket.getValueAt(selectedRow, 4);
+			String strDescription = (String) this.dataTicket.getValueAt(selectedRow, 5);
+			
+			return new Ticket(intTicketID, strVIN, intYear, strMake, strModel, strDescription);
+		}
+	}
+	
+	/**
+     * Exports the entire contents of the view's vehicle data table into an ArrayList of Vehicle objects.
+     * @return An ArrayList of Vehicle objects.
+     */
+	public ArrayList<Ticket> exportTicketDataFromTable()
+	{
+		ArrayList<Ticket> ticketList = new ArrayList<>();
+		
+		// Figure out how many rows (vehicles) there are in the table.
+		int rowCount = this.dataTicket.getRowCount();
+		
+		// For each row, grab the vehicle attributes and then construct a new Vehicle object from them.
+		// Then add the object to the ArrayList.
+		for (int row = 0; row < rowCount; row++)
+		{
+			int intTicketID = (int) this.dataTicket.getValueAt(row, 0);
+			String strVIN = (String) this.dataTicket.getValueAt(row, 1);
+			int intYear = (int) this.dataTicket.getValueAt(row, 2);
+			String strMake = (String) this.dataTicket.getValueAt(row, 3);
+			String strModel = (String) this.dataTicket.getValueAt(row, 4);
+			String strDescription = (String) this.dataTicket.getValueAt(row, 5);
+			
+			Ticket ticket = new Ticket(intTicketID, strVIN, intYear, strMake, strModel, strDescription);
+			ticketList.add(ticket);
+		}
+		return ticketList;
 	}
 }

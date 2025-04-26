@@ -10,11 +10,16 @@ public class LogInView extends JFrame
 {
 	private JFrame logInFrame;
 	private JPanel logInPane;
+	
 	private JTextField txtFieldAccountName;
 	private JPasswordField passwordField;
+	
 	private JButton btnLogIn;
 	
+	
+	// ----------------------------------------
 	// GUI Constructor
+	// ----------------------------------------
 	// Note: The constructor does not automatically setVisible() to true.
 	public LogInView() 
 	{
@@ -25,12 +30,11 @@ public class LogInView extends JFrame
 		logInFrame.setBounds(100, 100, 350, 265);
 		
 		// logInPane Properties
-		// This pane is using absolute positioning at the moment because fiddling with Swing layouts is annoying.
-		// Will probably update the layout to use something more automated later.
 		logInPane = new JPanel();
 		logInPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		logInPane.setLayout(null);
 		logInFrame.setContentPane(logInPane);
+		
 		
 		// lblWelcome Properties
 		JLabel lblWelcome = new JLabel("Welcome!");
@@ -46,20 +50,13 @@ public class LogInView extends JFrame
 		lblLogInInstructions.setBounds(10, 30, 314, 14);
 		logInPane.add(lblLogInInstructions);
 		
-		// txtFieldAccountName Properties
-		txtFieldAccountName = new JTextField();
-		txtFieldAccountName.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtFieldAccountName.setBounds(10, 88, 314, 20);
-		logInPane.add(txtFieldAccountName);
-		txtFieldAccountName.setColumns(10);
-		
 		// lblAccountNameField Properties
 		JLabel lblAccountName = new JLabel("Account Name:");
 		lblAccountName.setHorizontalAlignment(SwingConstants.LEFT);
 		lblAccountName.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblAccountName.setBounds(10, 69, 314, 14);
 		logInPane.add(lblAccountName);
-		
+				
 		// lblPassword Properties
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setHorizontalAlignment(SwingConstants.LEFT);
@@ -67,11 +64,20 @@ public class LogInView extends JFrame
 		lblPassword.setBounds(10, 131, 314, 14);
 		logInPane.add(lblPassword);
 		
+		
+		// txtFieldAccountName Properties
+		txtFieldAccountName = new JTextField();
+		txtFieldAccountName.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtFieldAccountName.setBounds(10, 88, 314, 20);
+		logInPane.add(txtFieldAccountName);
+		txtFieldAccountName.setColumns(10);
+		
 		// passwordField Properties
 		passwordField = new JPasswordField();
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		passwordField.setBounds(10, 150, 314, 20);
 		logInPane.add(passwordField);
+		
 		
 		// btnLogIn Properties
 		btnLogIn = new JButton("Log In");
@@ -80,34 +86,58 @@ public class LogInView extends JFrame
 		logInPane.add(btnLogIn);
 	}
 	
-	// View Methods for the Controller
-	// Sets the visibility of the window based on the boolean passed to it.
+	// ----------------------------------------
+	// PUBLIC FACING METHODS FOR THE CONTROLLER
+	// ----------------------------------------
+	
+	// ----------------------------------------
+	// GUI Methods
+	// ----------------------------------------
+	
+	/**
+     * Sets the visibility of the LogInView.
+     * @param visible - boolean -  If true, LogInView becomes visible. If false, LogInView is hidden.
+     */
 	public void setVisible(boolean visible)
 	{
-		logInFrame.setVisible(visible);
+		this.logInFrame.setVisible(visible);
 	}
+	
+	/**
+	 * Disposes (deletes) the LogInVeiw window.
+	 * @implNote Call this method when you are done with the window, no need to keep it around once the user is logged in.
+	 */
+	public void dispose()
+	{
+		this.logInFrame.dispose();
+	}
+	
+	
+	// ----------------------------------------
+	// Account Data Related Methods
+	// ----------------------------------------
 	
 	// Returns the String from txtFieldAccountName.
 	public String getAccountName()
 	{
-		return txtFieldAccountName.getText();
+		return this.txtFieldAccountName.getText();
 	}
 	
 	// Returns the String from passwordField.
 	public String getAccountPassword()
 	{
-		return new String(passwordField.getPassword());
+		return new String(this.passwordField.getPassword());
 	}
 	
 	// Creates an ActionListener for btnLogIn
 	public void addLogInListener(ActionListener listener)
 	{
-		btnLogIn.addActionListener(listener);
+		this.btnLogIn.addActionListener(listener);
 	}
 	
 	// When called, displays a pop-up window letting the user know they have entered invalid credentials.
 	public void badLogInMessage()
 	{
-		 JOptionPane.showMessageDialog(null, "The account name or password you have entered is incorrect.", "Invalid Account Credentials",  JOptionPane.OK_OPTION);
+		 JOptionPane.showMessageDialog(this, "The account name or password you have entered is incorrect.", "Invalid Account Credentials",  JOptionPane.OK_OPTION);
 	}
 }

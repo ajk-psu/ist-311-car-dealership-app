@@ -169,7 +169,7 @@ public class Vehicle
 	}
 	
 	/**
-     * Sets a Vehicle object's model attribute to the given make.
+     * Sets a Vehicle object's model attribute to the given model.
      * @param newModel - String - A String containing the new model value to change the Vehicle's make attribute to.
      */
 	public void setModel(String newModel)
