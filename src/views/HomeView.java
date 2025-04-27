@@ -9,6 +9,7 @@ import models.Vehicle;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 
 public class HomeView extends JFrame 
@@ -21,8 +22,24 @@ public class HomeView extends JFrame
 	private final String[] VEHICLE_TABLE_COLUMN_NAMES = {"VIN", "Make", "Model", "Year", "Color", "Mileage", "Price"};
 	private final String[] TICKET_TABLE_COLUMN_NAMES = {"Ticket ID", "VIN", "Year", "Make", "Model", "Description of Problem"};
 	
-	private DefaultTableModel dataVehicle = new DefaultTableModel(VEHICLE_TABLE_COLUMN_NAMES, 0);
-	private DefaultTableModel dataTicket = new DefaultTableModel(TICKET_TABLE_COLUMN_NAMES, 0);
+	private DefaultTableModel dataVehicle = new DefaultTableModel(VEHICLE_TABLE_COLUMN_NAMES, 0)
+	{
+		// Disables default editable cell behavior in each table
+		@Override
+		public boolean isCellEditable(int row, int column)
+		{
+			return false; 
+		}
+	};
+	
+	private DefaultTableModel dataTicket = new DefaultTableModel(TICKET_TABLE_COLUMN_NAMES, 0)
+	{
+		@Override
+		public boolean isCellEditable(int row, int column)
+		{
+			return false;
+		}
+	};
 	
 	private JButton btnSelectVehicle;
 	private JButton btnAddVehicle;
@@ -39,7 +56,8 @@ public class HomeView extends JFrame
 		// General Window Properties
 		homeFrame = new JFrame("Java Car Dealership Manager");
 		homeFrame.setResizable(false);
-		homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// Db connection severed and program closed via HomeCloseListener (in HomeController)
+		homeFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		homeFrame.setBounds(100, 100, 750, 785);
 				
 		// homePane Properties
@@ -142,18 +160,30 @@ public class HomeView extends JFrame
 	{
 		this.homeFrame.setVisible(visible);
 	}
-	
+
+	/**
+	 * Disposes (deletes) the Home window.
+	 * @implNote Call this method when you are done with the window, no need to keep it around once the user is finished.
+	 */
+	public void dispose()
+	{
+		this.homeFrame.dispose();
+	}
 	
 	/**
-     * When this method is called, it creates listeners for every interactable in the view.
+     * When this method is called, it creates listeners for every interactable (and window close operation) in the view.
      * @param listener - The listener to be added to the objects.
      */
-	public void createListeners(ActionListener listener)
+	public void createListeners(ActionListener listener, WindowAdapter HomeCloseListener)
 	{
+		// Add button click listeners
 		this.btnSelectVehicle.addActionListener(listener);
 		this.btnAddVehicle.addActionListener(listener);
 		this.btnReportVehicleIssue.addActionListener(listener);
 		this.btnSelectTicket.addActionListener(listener);
+
+		// Add window close listener
+		this.homeFrame.addWindowListener(HomeCloseListener);
 	}
 	
 	/**
@@ -165,7 +195,22 @@ public class HomeView extends JFrame
 		this.lblWelcomeMessage.setText("Welcome, " + name + "!");
 	}
 	
-	
+	/**
+	 * Presents a yes/no dialogue to the user when quitting from the home screen.
+	 * @return 1 for "Yes", 0 for "No", -1 if none are selected.
+	 */
+	public int showCloseDialogue()
+	{
+		// Present dialogue
+		int result = JOptionPane.showConfirmDialog(null, "Save your changes before exiting?", "Save Changes", JOptionPane.YES_NO_OPTION);
+		if(result == JOptionPane.YES_OPTION)
+			{return 1;}
+		else if (result == JOptionPane.NO_OPTION)
+			{return 0;}
+		else
+			return -1;
+	}
+
 	// ----------------------------------------
 	// Vehicle Data Related Methods
 	// ----------------------------------------
