@@ -24,16 +24,20 @@ public class VehicleDetailsView extends JFrame
 	private JTextField txtMileage;
 	private JTextField txtPrice;
 	
+	private Vehicle selectedVehicle;
+	
 	
 	// ----------------------------------------
 	// GUI Constructor
 	// ----------------------------------------
 	/**
 	 * Constructs the VehicleDetailsView window when called. This window needs to have a Vehicle passed to it to parse information from.
-	 * @param selectedVehicle - Vehicle - The Vehicle object to inspect the details of.
+	 * @param vehicleToInspect - Vehicle - The Vehicle object to inspect the details of.
 	 */
-	public VehicleDetailsView(Vehicle selectedVehicle) 
+	public VehicleDetailsView(Vehicle vehicleToInspect) 
 	{	
+		this.selectedVehicle = vehicleToInspect;
+		
 		// General Window Properties
 		vehicleDetailsViewFrame = new JFrame("Vehicle Details");
 		vehicleDetailsViewFrame.setResizable(false);
@@ -207,5 +211,19 @@ public class VehicleDetailsView extends JFrame
 	{
 		this.btnEditVehicle.addActionListener(listener);
 		this.btnRemoveVehicle.addActionListener(listener);
+	}
+	
+	
+	// ----------------------------------------
+	// Vehicle Data Related Methods
+	// ----------------------------------------
+	
+	/**
+     * Returns the subject Vehicle of this View.
+     * @return The subject Vehicle that was used to make this View.
+     */
+	public Vehicle getVehicle()
+	{
+		return selectedVehicle;
 	}
 }
