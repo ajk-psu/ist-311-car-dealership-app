@@ -8,6 +8,7 @@ import models.Vehicle;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 
 public class HomeView extends JFrame 
@@ -54,7 +55,8 @@ public class HomeView extends JFrame
 		// General Window Properties
 		homeFrame = new JFrame("Java Car Dealership Manager");
 		homeFrame.setResizable(false);
-		homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// Db connection severed and program closed via HomeCloseListener (in HomeController)
+		homeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		homeFrame.setBounds(100, 100, 750, 785);
 				
 		// homePane Properties
@@ -160,15 +162,19 @@ public class HomeView extends JFrame
 	
 	
 	/**
-     * When this method is called, it creates listeners for every interactable in the view.
+     * When this method is called, it creates listeners for every interactable (and window close operation) in the view.
      * @param listener - The listener to be added to the objects.
      */
-	public void createListeners(ActionListener listener)
+	public void createListeners(ActionListener listener, WindowAdapter HomeCloseListener)
 	{
+		// Add button click listeners
 		this.btnSelectVehicle.addActionListener(listener);
 		this.btnAddVehicle.addActionListener(listener);
 		this.btnSelectTicket.addActionListener(listener);
 		this.btnAddTicket.addActionListener(listener);
+
+		// Add window close listener
+		this.homeFrame.addWindowListener(HomeCloseListener);
 	}
 	
 	/**

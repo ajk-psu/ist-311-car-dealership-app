@@ -6,12 +6,15 @@ import models.Vehicle;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class HomeController 
 {
     // Initialize variables
     private HomeView view;
+    private AccountModel model;
     private int employeeID;
     private String employeeName;
     private ArrayList<Vehicle> vehicleTableContents;
@@ -29,13 +32,16 @@ public class HomeController
 	// ----------------------------------------
     public HomeController(AccountModel model, String username, String password)
     {
+        // Localize model for listener use
+        this.model = model;
+
         // Gather employee data from AccountModel
         employeeID = model.getEmployeeID(username, password);
         employeeName = model.getEmployeeName(employeeID);
 
         // Set view properties
         view = new HomeView();
-        view.createListeners(new HomeListener());
+        view.createListeners(new HomeListener(), new HomeCloseListener());
         view.updateWelcomeMessage(employeeName);
         populateVehicleTable();
 
@@ -83,6 +89,15 @@ public class HomeController
                     new AddVehicleController(view);
                     break;
             }
+        }
+    }
+
+    class HomeCloseListener extends WindowAdapter
+    {
+        @Override
+        public void windowClosed(WindowEvent e) {
+            model.closeConnection();
+            System.exit(0);
         }
     }
 }
