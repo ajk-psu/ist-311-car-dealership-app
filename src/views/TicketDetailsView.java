@@ -4,7 +4,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import models.Ticket;
-import models.Vehicle;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
