@@ -1,6 +1,7 @@
 package controllers;
 
 import models.AccountModel;
+import models.DBConnection;
 import views.LogInView;
 
 import java.awt.event.ActionEvent;
@@ -9,18 +10,26 @@ import java.awt.event.ActionListener;
 public class LogInController 
 {
     private LogInView view;
-    private AccountModel model;
+    private AccountModel accountModel;
+    private DBConnection dbConnection;
 
     // ----------------------------------------
 	// Instantiate GUI
 	// ----------------------------------------
-    public LogInController(AccountModel model, LogInView view)
+    public LogInController()
     {
+        // Instantiate db connection
+        dbConnection = new DBConnection();
+
+        // Instantiate account model
+        accountModel = new AccountModel(dbConnection.getConnection());
+
+        // Instantiate log in view
+        view = new LogInView();
+
         // Set view properties
-        this.view = view;
-        this.model = model;
         view.setVisible(true);
-        this.view.addLogInListener(new LogInListener());
+        view.addLogInListener(new LogInListener());
     }
 
     class LogInListener implements ActionListener 
@@ -33,12 +42,12 @@ public class LogInController
             String password = view.getAccountPassword();
 
             // Authenticates with database account information
-            if (model.authenticate(username, password))
+            if (accountModel.authenticate(username, password))
             {
                 // Hide current view
                 view.setVisible(false);
                 // Initialize home controller
-                new HomeController(model, username, password);
+                new HomeController(dbConnection, accountModel, username, password);
             }
             else
             {

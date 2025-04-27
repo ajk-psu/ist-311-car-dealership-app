@@ -1,6 +1,4 @@
-/*
- * Get the driver and path to the database so it is linked to this java program.
- */
+
 package models;
 
 import java.sql.*;
@@ -8,17 +6,13 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 
 public class AccountModel {
-    private static final String DATABASE_URL = "jdbc:ucanaccess://" + System.getProperty("user.dir") + "//db//dealership.accdb";
-    private Connection connection = null;
 
-    public AccountModel() {
-        try {
-            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-            connection = DriverManager.getConnection(DATABASE_URL);
-            System.out.println("Database connected.");
-        } catch (ClassNotFoundException | SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
-        }
+    Connection connection;
+
+    public AccountModel(Connection connection)
+    {
+        if (connection != null)
+            this.connection = connection;
     }
 
     /**
@@ -85,40 +79,4 @@ public class AccountModel {
         }
         return null; // Return null if no employee name is found
     }
-
-    /**
-     * Close the database connection.
-     */
-    public void closeConnection() {
-        try {
-            if (connection != null) {
-                connection.close();
-                System.out.println("Database connection closed.");
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-   /* 
-    * THIS IS FOR TESTING THE MODEL LOGIC! THE OFFICIAL
-    * main logic for authentication should be handled in LoginController.java!!!!
-    * 
-    public static void main(String[] args) {
-        // Testing the model logic
-        AccountModel model = new AccountModel();
-        
-        String username = "admin";
-        String password = "password123";
-
-        if (model.authenticate(username, password)) {
-            int empID = model.getEmployeeID(username, password);
-            JOptionPane.showMessageDialog(null, "Login Successful! Employee ID: " + empID);
-        } else {
-            JOptionPane.showMessageDialog(null, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
-        }
-
-        // Close connection
-        model.closeConnection();
-    } */
 }

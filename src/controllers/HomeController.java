@@ -2,7 +2,9 @@ package controllers;
 
 import views.HomeView;
 import models.AccountModel;
+import models.DBConnection;
 import models.Vehicle;
+import models.VehicleModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +16,8 @@ public class HomeController
 {
     // Initialize variables
     private HomeView view;
-    private AccountModel model;
+    private VehicleModel vehicleModel;
+    private DBConnection dbConnection;
     private int employeeID;
     private String employeeName;
     private ArrayList<Vehicle> vehicleTableContents;
@@ -30,14 +33,17 @@ public class HomeController
     // ----------------------------------------
 	// Instantiate GUI
 	// ----------------------------------------
-    public HomeController(AccountModel model, String username, String password)
+    public HomeController(DBConnection dbConnection, AccountModel accountModel, String username, String password)
     {
-        // Localize model for listener use
-        this.model = model;
+        // Localize db connection for window listener use
+        this.dbConnection = dbConnection;
+
+        // Instantiate vehicle model
+        vehicleModel = new VehicleModel(dbConnection.getConnection());
 
         // Gather employee data from AccountModel
-        employeeID = model.getEmployeeID(username, password);
-        employeeName = model.getEmployeeName(employeeID);
+        employeeID = accountModel.getEmployeeID(username, password);
+        employeeName = accountModel.getEmployeeName(employeeID);
 
         // Set view properties
         view = new HomeView();
@@ -96,7 +102,7 @@ public class HomeController
     {
         @Override
         public void windowClosed(WindowEvent e) {
-            model.closeConnection();
+            dbConnection.closeConnection();
             System.exit(0);
         }
     }
