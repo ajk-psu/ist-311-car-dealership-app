@@ -56,7 +56,7 @@ public class HomeView extends JFrame
 		homeFrame = new JFrame("Java Car Dealership Manager");
 		homeFrame.setResizable(false);
 		// Db connection severed and program closed via HomeCloseListener (in HomeController)
-		homeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		homeFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		homeFrame.setBounds(100, 100, 750, 785);
 				
 		// homePane Properties
@@ -159,7 +159,15 @@ public class HomeView extends JFrame
 	{
 		this.homeFrame.setVisible(visible);
 	}
-	
+
+	/**
+	 * Disposes (deletes) the Home window.
+	 * @implNote Call this method when you are done with the window, no need to keep it around once the user is finished.
+	 */
+	public void dispose()
+	{
+		this.homeFrame.dispose();
+	}
 	
 	/**
      * When this method is called, it creates listeners for every interactable (and window close operation) in the view.
@@ -186,7 +194,22 @@ public class HomeView extends JFrame
 		this.lblWelcomeMessage.setText("Welcome, " + name + "!");
 	}
 	
-	
+	/**
+	 * Presents a yes/no dialogue to the user when quitting from the home screen.
+	 * @return 1 for "Yes", 0 for "No", -1 if none are selected.
+	 */
+	public int showCloseDialogue()
+	{
+		// Present dialogue
+		int result = JOptionPane.showConfirmDialog(null, "Save your changes before exiting?", "Save Changes", JOptionPane.YES_NO_OPTION);
+		if(result == JOptionPane.YES_OPTION)
+			{return 1;}
+		else if (result == JOptionPane.NO_OPTION)
+			{return 0;}
+		else
+			return -1;
+	}
+
 	// ----------------------------------------
 	// Vehicle Data Related Methods
 	// ----------------------------------------

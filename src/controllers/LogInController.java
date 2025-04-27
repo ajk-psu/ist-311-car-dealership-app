@@ -6,6 +6,8 @@ import views.LogInView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class LogInController 
 {
@@ -29,7 +31,7 @@ public class LogInController
 
         // Set view properties
         view.setVisible(true);
-        view.addLogInListener(new LogInListener());
+        view.addLogInListener(new LogInListener(), new LogInCloseListener());
     }
 
     class LogInListener implements ActionListener 
@@ -54,6 +56,20 @@ public class LogInController
                 // Invalid authentication response
                 view.badLogInMessage();
             }
+        }
+    }
+
+    // ----------------------------------------
+	// Window Listener Logic
+	// ----------------------------------------
+    class LogInCloseListener extends WindowAdapter
+    {
+        @Override
+        // When window is closed
+        public void windowClosed(WindowEvent e) {
+            // Sever connection and close program
+            dbConnection.closeConnection();
+            System.exit(0);
         }
     }
 }

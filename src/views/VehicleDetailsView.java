@@ -7,8 +7,6 @@ import models.Vehicle;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.awt.Component;
-import java.awt.BorderLayout;
 
 public class VehicleDetailsView extends JFrame 
 {

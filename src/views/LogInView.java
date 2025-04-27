@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 
 public class LogInView extends JFrame 
 {
@@ -21,7 +22,8 @@ public class LogInView extends JFrame
 		// General Window Properties
 		logInFrame = new JFrame("Java Car Dealership Manager");
 		logInFrame.setResizable(false);
-		logInFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// Db connection severed and program closed via LogInCloseListener (in LogInController)
+		logInFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		logInFrame.setBounds(100, 100, 350, 265);
 		
 		// logInPane Properties
@@ -100,9 +102,12 @@ public class LogInView extends JFrame
 	}
 	
 	// Creates an ActionListener for btnLogIn
-	public void addLogInListener(ActionListener listener)
+	public void addLogInListener(ActionListener listener, WindowAdapter LogInCloseListener)
 	{
 		btnLogIn.addActionListener(listener);
+
+		// Add window close listener
+		this.logInFrame.addWindowListener(LogInCloseListener);
 	}
 	
 	// When called, displays a pop-up window letting the user know they have entered invalid credentials.

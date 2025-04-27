@@ -1,14 +1,14 @@
 package controllers;
 
-import views.HomeView;
-import models.AccountModel;
-import models.DBConnection;
-import models.VehicleModel;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import models.AccountModel;
+import models.DBConnection;
+import models.VehicleModel;
+import views.HomeView;
 
 public class HomeController 
 {
@@ -70,14 +70,39 @@ public class HomeController
         }
     }
 
+    // ----------------------------------------
+	// Window Listener Logic
+	// ----------------------------------------
     class HomeCloseListener extends WindowAdapter
     {
         @Override
-        public void windowClosed(WindowEvent e) {
-            if (vehicleModel.updateAllVehicles(view.exportVehicleDataFromTable()))
+        // When window is closed
+        public void windowClosing(WindowEvent e) {
+            switch (view.showCloseDialogue())
             {
-                dbConnection.closeConnection();
-                System.exit(0);
+                // User saves changes
+                case 1:
+                    // Commit vehicle edits to database
+                    if (vehicleModel.updateAllVehicles(view.exportVehicleDataFromTable()))
+                    {
+                        // Sever connection and close program
+                        dbConnection.closeConnection();
+                        view.dispose();
+                        System.exit(0);
+                    }
+                    break;
+
+                // User closes without saving
+                case 0:
+                    // Sever connection and close program
+                    dbConnection.closeConnection();
+                    view.dispose();
+                    System.exit(0);
+                    break;
+
+                // User clicks elsewhere
+                case -1:
+                    break;
             }
         }
     }

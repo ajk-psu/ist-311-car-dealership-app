@@ -3,8 +3,6 @@ package views;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import models.Vehicle;
-
 import java.awt.Font;
 import java.awt.event.ActionListener;
 
