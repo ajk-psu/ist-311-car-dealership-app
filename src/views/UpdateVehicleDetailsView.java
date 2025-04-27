@@ -25,16 +25,20 @@ public class UpdateVehicleDetailsView extends JFrame
 	private JTextField txtMileage;
 	private JTextField txtPrice;
 	
+	private Vehicle selectedVehicle;
+	
 	
 	// ----------------------------------------
 	// GUI Constructor
 	// ----------------------------------------
 	/**
 	 * Constructs the UpdateVehicleDetailsView window when called. This window needs to have a Vehicle passed to it to parse information from.
-	 * @param selectedVehicle - Vehicle - The Vehicle object to inspect the details of.
+	 * @param vehicleToUpdate - Vehicle - The Vehicle object to inspect the details of.
 	 */
-	public UpdateVehicleDetailsView(Vehicle selectedVehicle) 
+	public UpdateVehicleDetailsView(Vehicle vehicleToUpdate) 
 	{	
+		this.selectedVehicle = vehicleToUpdate;
+		
 		// General Window Properties
 		updateDetailsViewFrame = new JFrame("Vehicle Details");
 		updateDetailsViewFrame.setTitle("Updating Vehicle Details");
@@ -210,39 +214,48 @@ public class UpdateVehicleDetailsView extends JFrame
 	 * If unsuccessful, this method will return null instead.
 	 * @implNote This method can possibly return null if input validation fails. The caller should be ready to handle null being returned.
 	 */
-		public Object[] getUpdatedVehicleAttributes()
-		{
-			// First grab all Strings from the text fields.
-			String strVIN = this.txtVIN.getText().trim();
-			String strMake = this.txtMake.getText().trim();
-			String strModel = this.txtModel.getText().trim();
-			String strYear = this.txtYear.getText().trim();
-			String strColor = this.txtColor.getText().trim();
-			String strMileage = this.txtMileage.getText().trim();
-			String strPrice = this.txtPrice.getText().trim();
+	public Object[] getUpdatedVehicleAttributes()
+	{
+		// First grab all Strings from the text fields.
+		String strVIN = this.txtVIN.getText().trim();
+		String strMake = this.txtMake.getText().trim();
+		String strModel = this.txtModel.getText().trim();
+		String strYear = this.txtYear.getText().trim();
+		String strColor = this.txtColor.getText().trim();
+		String strMileage = this.txtMileage.getText().trim();
+		String strPrice = this.txtPrice.getText().trim();
 			
-			// Check to see if any fields are empty. We are not allowing empty/null values.
-			if (strVIN.isEmpty() || strMake.isEmpty() || strModel.isEmpty() || strYear.isEmpty() || strColor.isEmpty() || strMileage.isEmpty() || strPrice.isEmpty())
+		// Check to see if any fields are empty. We are not allowing empty/null values.
+		if (strVIN.isEmpty() || strMake.isEmpty() || strModel.isEmpty() || strYear.isEmpty() || strColor.isEmpty() || strMileage.isEmpty() || strPrice.isEmpty())
+		{
+			JOptionPane.showMessageDialog(this,"All fields are required. Please fill out every field.","Input Error",JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		else
+		{
+			// Attempts to cast strYear, dblMileage, and dblPrice the appropriate types.
+			try
 			{
-				JOptionPane.showMessageDialog(this,"All fields are required. Please fill out every field.","Input Error",JOptionPane.ERROR_MESSAGE);
+				int intYear = Integer.parseInt(strYear);
+				double dblMileage = Double.parseDouble(strMileage);
+				double dblPrice = Double.parseDouble(strPrice);
+					
+				return new Object[] {strVIN, strMake, strModel, intYear, strColor, dblMileage, dblPrice};
+			}
+			catch (NumberFormatException numEx)
+			{
+				JOptionPane.showMessageDialog(this, "Year must be an integer. Mileage and price must be valid numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
-			else
-			{
-				// Attempts to cast strYear, dblMileage, and dblPrice the appropriate types.
-				try
-				{
-					int intYear = Integer.parseInt(strYear);
-					double dblMileage = Double.parseDouble(strMileage);
-					double dblPrice = Double.parseDouble(strPrice);
-					
-					return new Object[] {strVIN, strMake, strModel, intYear, strColor, dblMileage, dblPrice};
-				}
-				catch (NumberFormatException numEx)
-				{
-					JOptionPane.showMessageDialog(this, "Year must be an integer. Mileage and price must be valid numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
-					return null;
-				}
-			}
 		}
+	}
+		
+	/**
+	 * Returns the subject Vehicle of this View.
+	 * @return The subject Vehicle that was used to make this View.
+	 */
+	public Vehicle getVehicle()
+	{
+		return selectedVehicle;
+	}
 }

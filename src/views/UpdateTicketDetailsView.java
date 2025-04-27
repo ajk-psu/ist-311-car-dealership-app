@@ -10,12 +10,12 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 
 
-public class ViewTicketDetailsView extends JFrame 
+public class UpdateTicketDetailsView extends JFrame 
 {
-	private JFrame ticketDetailsFrame;
+	private JFrame editTicketDetailsFrame;
 	private JPanel mainPane;
 	
-	private JButton btnEditTicket;
+	private JButton btnUpdateTicketChanges;
 	
 	private JTextField txtVIN;
 	private JTextField txtMake;
@@ -26,7 +26,6 @@ public class ViewTicketDetailsView extends JFrame
 	private JTextArea txtDescription;
 	
 	private Ticket ticketMain;
-	private JButton btnRemoveTicket;
 	
 	
 	// ----------------------------------------
@@ -34,38 +33,32 @@ public class ViewTicketDetailsView extends JFrame
 	// ----------------------------------------
 	
 	/**
-	 * Constructor for the ViewTicketDetailstView window. This constructor needs a Ticket object passed to it.
+	 * Constructor for the UpdateTicketDetailsView window. This constructor needs a Ticket object passed to it.
 	 * @param ticket - Ticket - The ticket object of that is the subject of the report to be made.
 	 */
-	public ViewTicketDetailsView(Ticket ticket) 
+	public UpdateTicketDetailsView(Ticket ticket) 
 	{	
 		this.ticketMain = ticket;
 		
 		// General Window Properties
-		ticketDetailsFrame = new JFrame("Add Vehicle");
-		ticketDetailsFrame.setTitle("Ticket Details");
-		ticketDetailsFrame.setResizable(false);
-		ticketDetailsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		ticketDetailsFrame.setBounds(100, 100, 380, 610);
+		editTicketDetailsFrame = new JFrame("Add Vehicle");
+		editTicketDetailsFrame.setTitle("Edit Ticket Details");
+		editTicketDetailsFrame.setResizable(false);
+		editTicketDetailsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		editTicketDetailsFrame.setBounds(100, 100, 380, 610);
 		
 		// homePane Properties
 		mainPane = new JPanel();
 		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		mainPane.setLayout(null);
-		ticketDetailsFrame.setContentPane(mainPane);
+		editTicketDetailsFrame.setContentPane(mainPane);
 		
 		
-		// btnCreateTicket Properties
-		btnEditTicket = new JButton("Edit Ticket Details");
-		btnEditTicket.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnEditTicket.setBounds(10, 519, 148, 41);
-		mainPane.add(btnEditTicket);
-		
-		// btnRemoveTicket Properties
-		btnRemoveTicket = new JButton("Remove Ticket");
-		btnRemoveTicket.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnRemoveTicket.setBounds(206, 519, 148, 41);
-		mainPane.add(btnRemoveTicket);
+		// btnSaveChangesProperties
+		btnUpdateTicketChanges = new JButton("Update Ticket Details");
+		btnUpdateTicketChanges.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnUpdateTicketChanges.setBounds(94, 519, 166, 41);
+		mainPane.add(btnUpdateTicketChanges);
 		
 		
 		// txtTicketID Properties
@@ -79,7 +72,6 @@ public class ViewTicketDetailsView extends JFrame
 		
 		// txtDescription Properties
 		txtDescription = new JTextArea(ticketMain.getDescription());
-		txtDescription.setEditable(false);
 		txtDescription.setWrapStyleWord(true);
 		txtDescription.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtDescription.setColumns(10);
@@ -120,7 +112,7 @@ public class ViewTicketDetailsView extends JFrame
 		
 		
 		// lblInstructions Properties
-		JLabel lblInstructions = new JLabel("Viewing ticket details...");
+		JLabel lblInstructions = new JLabel("Editing ticket details...");
 		lblInstructions.setHorizontalAlignment(SwingConstants.CENTER);
 		lblInstructions.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblInstructions.setBounds(10, 11, 344, 14);
@@ -183,21 +175,21 @@ public class ViewTicketDetailsView extends JFrame
 	// ----------------------------------------
 	
 	/**
-	 * Sets the visibility of the addTicketFrame
+	 * Sets the visibility of the UpdateTicketDetailsView frame.
 	 * @param visible - boolean -  If true, addVehicleFrame becomes visible. If false, it is hidden.
 	 */
 	public void setVisible(boolean visible)
 	{
-		this.ticketDetailsFrame.setVisible(visible);
+		this.editTicketDetailsFrame.setVisible(visible);
 	}
 	
 	/**
-	 * Disposes (deletes) the AddTicketView window.
+	 * Disposes (deletes) the UpdateTicketDetailsView window.
 	 * @implNote Call this method when you are done with the window, no need to keep it around once the user is finished making a ticket.
 	 */
 	public void dispose()
 	{
-		this.ticketDetailsFrame.dispose();
+		this.editTicketDetailsFrame.dispose();
 	}
 	
 	/**
@@ -206,8 +198,7 @@ public class ViewTicketDetailsView extends JFrame
      */
 	public void createListeners(ActionListener listener)
 	{
-		this.btnEditTicket.addActionListener(listener);
-		this.btnRemoveTicket.addActionListener(listener);
+		this.btnUpdateTicketChanges.addActionListener(listener);
 	}
 	
 	/**
@@ -218,6 +209,49 @@ public class ViewTicketDetailsView extends JFrame
 	// ----------------------------------------
 	// Ticket Data Related Methods
 	// ----------------------------------------
+	
+	/**
+	 * When called, this method will collect the user's input from each text field and return them as one Object[] array to be used
+	 * elsewhere for updating a Ticket's attributes. This method will validate the user's input to ensure fields are not empty
+	 * and are of the right type. If the method cannot validate, it will instead return null.
+	 * @return If validation is successful, an Object[] array containing the attributes to update a Vehicle's attributes from. 
+	 * If unsuccessful, this method will return null instead.
+	 * @implNote This method can possibly return null if input validation fails. The caller should be ready to handle null being returned.
+	 */
+	public Object[] getUpdatedTicketAttributes()
+	{
+		// First grab all Strings from the text fields.
+		String strTicketID = this.txtTicketID.getText().trim();
+		String strDescription = this.txtDescription.getText().trim();
+		String strVIN = this.txtVIN.getText().trim();
+		String strYear = this.txtYear.getText().trim();
+		String strMake = this.txtMake.getText().trim();
+		String strModel = this.txtModel.getText().trim();
+				
+
+		// Check to see if any fields are empty. We are not allowing empty/null values.
+		if (strTicketID.isEmpty() || strDescription.isEmpty() || strVIN.isEmpty() || strYear.isEmpty() || strMake.isEmpty() || strModel.isEmpty())
+		{
+			JOptionPane.showMessageDialog(this,"All fields are required. Please fill out every field.","Input Error",JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		else
+		{
+			// Attempts to cast strYear to the appropriate type.
+			try
+			{
+				int intYear = Integer.parseInt(strYear);
+						
+				return new Object[] {strTicketID, strDescription, strVIN, intYear, strMake, strModel};
+			}
+			catch (NumberFormatException numEx)
+			{
+				JOptionPane.showMessageDialog(this, "Year must be an integer.", "Input Error", JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+		}
+	}
+	
 	
 	/**
      * Returns the subject Ticket of this View.

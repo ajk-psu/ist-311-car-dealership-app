@@ -37,6 +37,25 @@ public class Ticket
 		this.strModel = problemVehicle.getModel();
 	}
 	
+	// Alternative constructor in cases you might want to use an Object[] array of Ticket details.
+	public Ticket (Object attributes[])
+	{
+		if (attributes != null)
+		{
+			this.intTicketID = (int) attributes[0];
+			this.strVIN = (String) attributes[1];
+			this.intYear = (int) attributes[2];
+			this.strMake = (String) attributes[3];
+			this.strModel = (String) attributes[4];
+			this.strDescription = (String) attributes[5];
+		}
+		else
+		{
+			return;
+		}
+		
+	}
+	
 	// -------------------
 	// ACCESORS
 	// -------------------
@@ -100,6 +119,31 @@ public class Ticket
 	// -------------------
 	// MUTATORS
 	// -------------------
+	
+	/**
+     * Sets a Ticket's Ticket ID attribute to the given ID.
+     * @param newTicketAttributes - Object[] - An Object[] array containing the new attributes to change a Ticket's attributes to. 
+     * This array must be in the proper order (Ticket ID, VIN, Year, Make, Model, Description) in order for this method to work.
+     */
+	public void setEverything(Object[] newTicketAttributes)
+	{
+		// It's possible that some methods in this program return null. This should be handled before calling this method,
+		// but in the case it wasn't this if will act as a final check to stop the program from using a null value.
+		if (newTicketAttributes != null)
+		{
+			this.intTicketID = (int) newTicketAttributes[0];
+			this.strVIN = (String) newTicketAttributes[1];
+			this.intYear = (int) newTicketAttributes[2];
+			this.strMake = (String) newTicketAttributes[3];
+			this.strModel = (String) newTicketAttributes[4];
+			this.strDescription = (String) newTicketAttributes[5];
+		}
+		else
+		{
+			// If the array is null, do nothing.
+			return;
+		}
+	}
 	
 	/**
      * Sets a Ticket's Ticket ID attribute to the given ID.

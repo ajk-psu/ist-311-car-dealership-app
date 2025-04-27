@@ -25,6 +25,8 @@ public class AddTicketView extends JFrame
 	
 	private Vehicle vehicleSubjectOfTicket;
 	
+	private ImageIcon icon = new ImageIcon("img/program_icon.png");
+	
 	
 	// ----------------------------------------
 	// GUI Constructor
@@ -44,6 +46,7 @@ public class AddTicketView extends JFrame
 		addTicketFrame.setResizable(false);
 		addTicketFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		addTicketFrame.setBounds(100, 100, 380, 610);
+		addTicketFrame.setIconImage(icon.getImage());
 		
 		// homePane Properties
 		mainPane = new JPanel();
@@ -229,7 +232,7 @@ public class AddTicketView extends JFrame
 		}
 		else
 		{
-			// Attempts to cast strYear, dblMileage, and dblPrice the appropriate types.
+			// Attempts to cast strYear to the appropriate type.
 			try
 			{
 				int intYear = Integer.parseInt(strYear);
