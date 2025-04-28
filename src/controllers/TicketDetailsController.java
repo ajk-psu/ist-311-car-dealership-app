@@ -1,29 +1,29 @@
 package controllers;
 
-import models.Vehicle;
+import models.Ticket;
 import views.HomeView;
-import views.VehicleDetailsView;
+import views.TicketDetailsView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VehicleDetailsController
+public class TicketDetailsController
 {
     // Initialize variables
-    private Vehicle selectedVehicle;
-    private VehicleDetailsView view;
+    private Ticket selectedTicket;
+    private TicketDetailsView view;
     private HomeView homeView;
 
     // ----------------------------------------
 	// Instantiate GUI
 	// ----------------------------------------
-    public VehicleDetailsController(HomeView homeView, Vehicle selectedVehicle)
+    public TicketDetailsController(HomeView homeView, Ticket selectedTicket)
     {
         // Set view properties
         this.homeView = homeView;
-        this.selectedVehicle = selectedVehicle;
-        view = new VehicleDetailsView(selectedVehicle);
-        view.createListeners(new VehicleDetailsListener());
+        this.selectedTicket = selectedTicket;
+        view = new TicketDetailsView(selectedTicket);
+        view.createListeners(new TicketDetailsListener());
 
         view.setVisible(true);
     }
@@ -31,27 +31,27 @@ public class VehicleDetailsController
     // ----------------------------------------
 	// Vehicle Details Listener Logic
 	// ----------------------------------------
-    class VehicleDetailsListener implements ActionListener
+    class TicketDetailsListener implements ActionListener
     {
         @Override
         public void actionPerformed(ActionEvent e) {
             switch(e.getActionCommand())
             {
                 // On button click
-                case "Edit Vehicle":
-                    // Close vehicle details view
+                case "Edit Ticket Details":
+                    // Close ticket details view
                     view.dispose();
                     // Initialize update details controller
-                    new UpdateVehicleDetailsController(homeView, selectedVehicle);
+                    new UpdateTicketDetailsController(homeView, selectedTicket);
                     break;
 
                 // On button click
-                case "Remove Vehicle":
+                case "Remove Ticket":
                     // Close vehicle details view
                     view.dispose();
                     
                     // Update home view table
-                    homeView.removeVehicleFromTable(selectedVehicle);
+                    homeView.removeTicketFromTable(selectedTicket);
                     break;
             }
         }

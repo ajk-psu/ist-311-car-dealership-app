@@ -1,55 +1,55 @@
 package controllers;
 
-import models.Vehicle;
+import models.Ticket;
 import views.HomeView;
-import views.UpdateVehicleDetailsView;
+import views.UpdateTicketDetailsView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UpdateVehicleDetailsController
+public class UpdateTicketDetailsController
 {
     // Initialize variables
-    private UpdateVehicleDetailsView view;
+    private UpdateTicketDetailsView view;
     private HomeView homeView;
-    private Object[] updatedVehicleAttributes;
+    private Object[] updatedTicketAttributes;
 
     // ----------------------------------------
 	// Instantiate GUI
 	// ----------------------------------------
-    public UpdateVehicleDetailsController(HomeView homeView, Vehicle selectedVehicle)
+    public UpdateTicketDetailsController(HomeView homeView, Ticket selectedTicket)
     {
         // Set view properties
         this.homeView = homeView;
-        view = new UpdateVehicleDetailsView(selectedVehicle);
-        view.createListeners(new UpdateVehicleDetailsListener());
+        view = new UpdateTicketDetailsView(selectedTicket);
+        view.createListeners(new UpdateTicketDetailsListener());
 
         view.setVisible(true);
     }
 
     // ----------------------------------------
-	// Update Vehicle Listener Logic
+	// Update Ticket Listener Logic
 	// ----------------------------------------
-    class UpdateVehicleDetailsListener implements ActionListener
+    class UpdateTicketDetailsListener implements ActionListener
     {
         @Override
         public void actionPerformed(ActionEvent e) {
             switch(e.getActionCommand())
             {
                 // On button click
-                case "Update Vehicle Details":
+                case "Update Ticket Details":
                 // Gathers user data
-                updatedVehicleAttributes = (view.getUpdatedVehicleAttributes());
+                updatedTicketAttributes = (view.getUpdatedTicketAttributes());
 
                 // Validates user data for null values and types
-                if (updatedVehicleAttributes != null)
+                if (updatedTicketAttributes != null)
                 {
 
                     // Close current view
                     view.dispose();
 
                     // Update home view table
-                    homeView.updateVehicleInTable(new Vehicle(updatedVehicleAttributes));
+                    homeView.updateTicketInTable(new Ticket(updatedTicketAttributes));
                 }
                 break;
             }

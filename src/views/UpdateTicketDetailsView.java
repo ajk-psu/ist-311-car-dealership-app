@@ -236,8 +236,9 @@ public class UpdateTicketDetailsView extends JFrame
 			try
 			{
 				int intYear = Integer.parseInt(strYear);
+				int intTicketID = Integer.parseInt(strTicketID);
 						
-				return new Object[] {strTicketID, strDescription, strVIN, intYear, strMake, strModel};
+				return new Object[] {intTicketID, strVIN, intYear, strMake, strModel, strDescription};
 			}
 			catch (NumberFormatException numEx)
 			{

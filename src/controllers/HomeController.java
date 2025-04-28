@@ -60,7 +60,7 @@ public class HomeController
             {
                 // On button click
                 case "Select Vehicle":
-                    // Checks user input for null values, only accepts complete data
+                    // Makes sure vehicle is selected
                     if (view.getSelectedVehicleFromTable() != null)
 
                         // Instantiates vehicle details controller
@@ -75,11 +75,20 @@ public class HomeController
 
                 // On button click
                 case "Report Vehicle Issue":
-                    // Checks user input for null values, only accepts complete data
+                    // Makes sure vehicle is selected
                     if (view.getSelectedVehicleFromTable() != null)
 
                         // Instantiates add ticket controller
                         new AddTicketController(view, view.getSelectedVehicleFromTable());
+                    break;
+                
+                // On button click
+                case "Select Ticket":
+                    // Makes sure ticket is selected
+                    if (view.getSelectedTicketFromTable() != null)
+
+                        // Instantiates ticket details controller
+                        new TicketDetailsController(view, view.getSelectedTicketFromTable());
                     break;
             }
         }
