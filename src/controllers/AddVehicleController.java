@@ -44,8 +44,6 @@ public class AddVehicleController
                     // Validates data - no null values accepted
                     if (newVehicleAttributes != null)
                     {
-                        // TODO: Add vehicle in database
-
                         // Close current view
                         view.dispose();
 

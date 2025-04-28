@@ -72,6 +72,15 @@ public class HomeController
                     // Instantiates add vehicle controller
                     new AddVehicleController(view);
                     break;
+
+                // On button click
+                case "Report Vehicle Issue":
+                    // Checks user input for null values, only accepts complete data
+                    if (view.getSelectedVehicleFromTable() != null)
+
+                        // Instantiates add ticket controller
+                        new AddTicketController(view, view.getSelectedVehicleFromTable());
+                    break;
             }
         }
     }

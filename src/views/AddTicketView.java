@@ -196,6 +196,14 @@ public class AddTicketView extends JFrame
 	{
 		this.btnCreateTicket.addActionListener(listener);
 	}
+
+	/**
+     * When this method is called, it displays a "no duplicates accepted" message to the user.
+     */
+	public void showDuplicateMessage()
+	{
+		JOptionPane.showMessageDialog(null, "Each ticket ID must be unique.", "Input Error", JOptionPane.ERROR_MESSAGE);
+	}
 	
 	
 	// ----------------------------------------
@@ -233,8 +241,9 @@ public class AddTicketView extends JFrame
 			try
 			{
 				int intYear = Integer.parseInt(strYear);
+				int intTicketID = Integer.parseInt(strTicketID);
 				
-				return new Object[] {strTicketID, strDescription, strVIN, intYear, strMake, strModel};
+				return new Object[] {intTicketID, strVIN, intYear, strMake, strModel, strDescription};
 			}
 			catch (NumberFormatException numEx)
 			{

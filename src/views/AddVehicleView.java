@@ -230,7 +230,7 @@ public class AddVehicleView extends JFrame
 				double dblMileage = Double.parseDouble(strMileage);
 				double dblPrice = Double.parseDouble(strPrice);
 				
-				return new Object[] {strVIN, strMake, strModel, intYear, strColor, dblMileage, dblPrice};
+				return new Object[] {strVIN, intYear, strMake, strModel, strColor, dblMileage, dblPrice};
 			}
 			catch (NumberFormatException numEx)
 			{

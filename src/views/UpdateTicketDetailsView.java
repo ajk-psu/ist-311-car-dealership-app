@@ -4,7 +4,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import models.Ticket;
-import models.Vehicle;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -200,11 +199,7 @@ public class UpdateTicketDetailsView extends JFrame
 	{
 		this.btnUpdateTicketChanges.addActionListener(listener);
 	}
-	
-	/**
-     * When this method is called, it creates listeners for every interactable in the view.
-     * @param listener - The listener to be added to the objects.
-     */
+
 	
 	// ----------------------------------------
 	// Ticket Data Related Methods
