@@ -26,7 +26,7 @@ public class VehicleModel
     {
         // Prep statement
         ArrayList<Vehicle> vehicleList = new ArrayList<Vehicle>();
-        String query = "SELECT VIN, Make, Model, Vehicle_Year, Color, Mileage, Price FROM Vehicle";
+        String query = "SELECT VIN, Make, Model, Vehicle_Year, Color, Mileage, Price FROM Vehicle ORDER BY Make ASC";
 
         // Attempt statement
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -57,7 +57,7 @@ public class VehicleModel
     }
 
     /**
-     * Commits finished data to database upon program exit
+     * Commits finished vehicle data to database upon program exit
      */
     public boolean updateAllVehicles(ArrayList<Vehicle> viewTable)
     {
@@ -71,7 +71,7 @@ public class VehicleModel
         }
         catch (SQLException e) 
         {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Failed Delete", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Failed Vehicle Delete", JOptionPane.ERROR_MESSAGE);
         }
 
         // Once table is clear, insert values from Home View
@@ -106,7 +106,7 @@ public class VehicleModel
         catch (SQLException e) 
         {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Failed Insert", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Failed Vehicle Insert", JOptionPane.ERROR_MESSAGE);
         }
         // Return false if error occurs or update fails
         return false;

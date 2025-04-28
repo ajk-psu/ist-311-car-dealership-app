@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 
 import models.AccountModel;
 import models.DBConnection;
+import models.TicketModel;
 import models.VehicleModel;
 import views.HomeView;
 
@@ -14,6 +15,7 @@ public class HomeController
 {
     // Initialize variables
     private HomeView view;
+    private TicketModel ticketModel;
     private VehicleModel vehicleModel;
     private DBConnection dbConnection;
     private int employeeID;
@@ -30,6 +32,9 @@ public class HomeController
         // Instantiate vehicle model
         vehicleModel = new VehicleModel(dbConnection.getConnection());
 
+        // Instantiate ticket model
+        ticketModel = new TicketModel(dbConnection.getConnection());
+
         // Gather employee data from AccountModel
         employeeID = accountModel.getEmployeeID(username, password);
         employeeName = accountModel.getEmployeeName(employeeID);
@@ -39,6 +44,7 @@ public class HomeController
         view.createListeners(new HomeListener(), new HomeCloseListener());
         view.updateWelcomeMessage(employeeName);
         view.updateEntireVehicleTable(vehicleModel.getAllVehicles());
+        view.updateEntireTicketTable(ticketModel.getAllTickets());
 
         view.setVisible(true);
     }
@@ -82,8 +88,9 @@ public class HomeController
             {
                 // User saves changes
                 case 1:
-                    // Commit vehicle edits to database
-                    if (vehicleModel.updateAllVehicles(view.exportVehicleDataFromTable()))
+                    // Commit vehicle and ticket edits to database
+                    if (vehicleModel.updateAllVehicles(view.exportVehicleDataFromTable()) && 
+                        ticketModel.updateAllTickets(view.exportTicketDataFromTable()))
                     {
                         // Sever connection and close program
                         dbConnection.closeConnection();
